@@ -9,4 +9,4 @@ const Footer = () => {
   )
 }
 
-export default Footer className='footer'
+export default Footer
