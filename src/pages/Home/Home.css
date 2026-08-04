@@ -28,7 +28,7 @@
     margin-bottom: 50px;
 }
 .hero-btns .btn img{
-    width: 25x;
+    width: 18px;
 }
 .hero-btns .btn{ 
     border:0;
@@ -42,4 +42,17 @@
     background-color: #fff;
     border-radius: 5px;
     cursor: pointer;
+}
+.hero-btns .btn.dark-btn{
+    color: #fff;
+    background: #6d6d6eb3 ;
+}
+.hero-btns .btn:hover{
+    background:#ffffffbf}
+.hero-btns .btn.dark-btn:hover{
+    background: #6d6d6e;
+}
+.more-cards{
+    padding-left: 6%;
+    
 }
