@@ -1,52 +1,62 @@
-import React ,{ useEffect,useRef } from 'react'
-import './TitleCards.css'
-import cards_data from '../../assets/cards/Cards_data'
+import React, { useEffect, useRef, useState } from 'react';
+import './TitleCards.css';
 import { Link } from 'react-router-dom';
 
+const TitleCards = ({ title, category }) => {
+  const [apiData, setApiData] = useState([]);
+  const cardsRef = useRef(null);
 
+  useEffect(() => {
+    const selectedCategory = category || 'now_playing';
 
+    // Call your local Vercel serverless proxy route instead of TMDB directly
+    fetch(`/api/movies?category=${selectedCategory}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.results) {
+          setApiData(data.results);
+        }
+      })
+      .catch((err) => console.error('Fetch error:', err));
 
+    const currentRef = cardsRef.current;
+    
+    const handleWheel = (event) => {
+      event.preventDefault();
+      if (currentRef) {
+        currentRef.scrollLeft += event.deltaY;
+      }
+    };
 
-const TitleCards = ({title , category}) => {
-  const[apiData,setApiData] = React.useState([]);
+    if (currentRef) {
+      currentRef.addEventListener('wheel', handleWheel);
+    }
 
-const cardsRef = useRef();
-const options = {
-  method: 'GET',
-  headers: {accept: 'application/json',  Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMWY5MWFjY2Y2YTIxZTI3ZTI2YmVmYjEzMzdjNjFhZCIsIm5iZiI6MTc4NTkzNjE4NC41MzIsInN1YiI6IjZhNzMzOTM4OTE1NmVmMjJlOTE1NTI3YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.E_1x_XWOGY7T-fCrZgHtKkIhgLRMj6HxwH_s7Tp655c'}
-};
-
-
-
-
-const handlewheel=(event)=>{
-  event.preventDefault();
-  cardsRef.current.scrollLeft += event.deltaY;
-
-}
-
-
-useEffect(()=>{ 
-  fetch(`https://api.themoviedb.org/3/movie/${category?category:'now_playing'}?language=en-US&page=1`, options)
-  .then(response => response.json())
-  .then(response => setApiData(response.results))
-  .catch(err => console.error(err));
-  cardsRef.current.addEventListener('wheel',handlewheel);
-},[])
+    return () => {
+      if (currentRef) {
+        currentRef.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, [category]); // Category added to dependency array to re-fetch when props change
 
   return (
-    <div className='title-cards'>
-      <h2>{title?title: "Popular on Netflix"}</h2>
+    <div className="title-cards">
+      <h2>{title ? title : 'Popular on Netflix'}</h2>
       <div className="card-list" ref={cardsRef}>
-        {apiData.map((card,index)=>{
-          return <Link to={`/player/${card.id}`} className="card" key={index}>
-            <img src={'https://image.tmdb.org/t/p/w500'+card.poster_path} alt="" />
-            <p>{card.original_title}</p>
+        {apiData && apiData.map((card, index) => {
+          return (
+            <Link to={`/player/${card.id}`} className="card" key={card.id || index}>
+              <img 
+                src={card.poster_path ? `https://image.tmdb.org/t/p/w500${card.poster_path}` : ''} 
+                alt={card.original_title || 'Movie'} 
+              />
+              <p>{card.original_title}</p>
             </Link>
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TitleCards
+export default TitleCards;
