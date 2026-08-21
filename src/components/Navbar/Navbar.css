@@ -6,7 +6,7 @@
   position: fixed;
   font-size: 14px;
   color: #e5e5e5;
-  background-color: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 10%,transparent);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 10%,transparent);
   z-index: 1;
 }
 .navbar_left {
@@ -47,7 +47,7 @@
 }
 .navbar .dropdown {
   position: absolute;
-  top:40px;
+  top:100%;
   right: 0;
   background-color: #191919;
   width: max-content;
@@ -68,6 +68,52 @@
 .nav-dark{
   background: #141414;
 }
-
- 
-
+@media (max-width:800px){
+  .navbar{
+    padding:15px 4%;
+  }
+  .navbar_left{
+    gap: 25px;
+  }
+  .navbar_left ul{
+    display:none;
+  }
+  .navbar_left img {
+    width:70px;
+  }
+  .navbar_right{
+    gap:15px;
+  }
+  .navbar_right .icon{
+    width: 18px;
+  }
+  .navbar_right .profile{
+    width: 30px;
+  }
+}
+@media (max-width: 500px){
+  .navbar{
+    padding:12px 4%;
+  }
+  .navbar_left{
+    gap: 15px;
+  }
+  .navbar_left img {
+    width:55px;
+  }
+  .navbar_right{
+    gap:10px;
+  }
+  .navbar_right .icon{
+    width: 16px;
+  }
+  .navbar_right .profile{
+    width: 26px;
+  }
+  .navbar .dropdown{
+    padding: 14px 18px;
+  }
+  .navbar .dropdown p{
+    font-size: 12px;
+  }
+}
