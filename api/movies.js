@@ -1,5 +1,5 @@
+/* global process */
 export default async function handler(req, res) {
-  // Grab category from the request query, default to 'now_playing'
   const category = req.query.category || 'now_playing';
 
   const options = {
